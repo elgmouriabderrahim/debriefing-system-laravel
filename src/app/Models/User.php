@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function classrooms()
     {
-        return $this->belongsToMany(Classroom::class, 'classroom_instructor');
+        return $this->belongsToMany(Classroom::class, 'classroom_instructor', 'instructor_id');
     }
 
     public function livrables()
@@ -73,5 +73,9 @@ class User extends Authenticatable
     public function debriefingsAsLearner()
     {
         return $this->hasMany(Debriefing::class, 'learner_id');
+    }
+
+    public function createdBriefs() {
+        return $this->hasMany(Brief::class, 'instructor_id');
     }
 }

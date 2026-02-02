@@ -14,6 +14,15 @@ return new class extends Migration
         Schema::create('briefs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->string('title');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->text('content');
+            $table->string('type');
+            
+            $table->foreignId('instructor_id')->constrained('users')->onDelete('set null');
+            $table->foreignId('sprint_id')->constrained('sprints')->onDelete('cascade');
         });
     }
 

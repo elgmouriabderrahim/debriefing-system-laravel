@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('sprints', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->string('name');
+            $table->integer('duration_days');
+            $table->integer('order');
         });
     }
 

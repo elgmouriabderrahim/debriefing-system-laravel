@@ -9,6 +9,7 @@ class Debriefing extends Model
     protected $fillable = [
         'level',
         'comment',
+        
         'instructor_id',
         'learner_id',
         'brief_id'

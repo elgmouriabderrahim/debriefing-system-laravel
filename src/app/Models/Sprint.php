@@ -8,7 +8,7 @@ class Sprint extends Model
 {
     protected $fillable = [
         'name',
-        'duration',
+        'duration_days',
         'order'
     ];
 

@@ -8,15 +8,15 @@ class Classroom extends Model
 {
     protected $fillable = [
         'name',
-        'year'
+        'promotion_year'
     ];
 
     public function learners(){
-        return $this->hasMany(User::class)->where('role', 'learner');
+        return $this->hasMany(User::class);
     }
 
     public function instructors(){
-        return $this->belongsToMany(User::class, 'classroom_instructor')->where('role', 'instructor');
+        return $this->belongsToMany(User::class, 'classroom_instructor', 'classroom_id', 'instructor_id');
     }
 
     public function sprints(){

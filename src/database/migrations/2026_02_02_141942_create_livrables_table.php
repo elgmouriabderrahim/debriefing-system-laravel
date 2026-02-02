@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('livrables', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->text('content');
+            $table->foreignId('learner_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('brief_id')->constrained('briefs')->onDelete('cascade');
         });
     }
 

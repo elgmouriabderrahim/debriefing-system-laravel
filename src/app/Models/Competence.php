@@ -11,11 +11,11 @@ class Competence extends Model
         'code'
     ];
 
-    public function brief(){
-        return $this->belongsToMany(Brief::class, 'brief_competence');
+    public function briefs(){
+        return $this->belongsToMany(Brief::class);
     }
 
-    public function debriefing(){
-        return $this->belongsToMany(Debriefing::class, 'competence_debriefing');
+    public function debriefings(){
+        return $this->belongsToMany(Debriefing::class);
     }
 }

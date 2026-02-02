@@ -20,16 +20,16 @@ class Brief extends Model
         return $this->belongsTo(Sprint::class);
     }
 
-    public function livrable(){
-        return $this->hasOne(Livrable::class);
+    public function livrables(){
+        return $this->hasMany(Livrable::class);
     }
 
     public function competences(){
-        return $this->belongsToMany(Competence::class, 'brief_competence');
+        return $this->belongsToMany(Competence::class);
     }
 
-    public function debriefing(){
-        return $this->hasOne(Debriefing::class);
+    public function debriefings(){
+        return $this->hasMany(Debriefing::class);
     }
 
 
