@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Debriefing extends Model
 {
     protected $fillable = [
-        'level',
         'comment',
         
         'instructor_id',

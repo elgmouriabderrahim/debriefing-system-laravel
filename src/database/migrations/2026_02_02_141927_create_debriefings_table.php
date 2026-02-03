@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->enum('level', ['imiter', 's_adapter', 'transposer']);
             $table->text('comment')->nullable();
 
             $table->foreignId('instructor_id')->constrained('users')->onDelete('set null');
