@@ -24,8 +24,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+            'info' => 'email or password is incorrect',
+        ])->withInput();
     }
 
     public function logOut(Request $request)
@@ -35,7 +35,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 
 
@@ -43,6 +43,8 @@ class AuthController extends Controller
     {
         if ($user->role === 'instructor') {
             return redirect()->intended('/instructor/dashboard');
+        }elseif($user->role === 'admin'){
+            return redirect()->intended('/admin/dashboard');
         }
 
         return redirect()->intended('/learner/briefs');
