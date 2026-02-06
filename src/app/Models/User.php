@@ -78,4 +78,9 @@ class User extends Authenticatable
     public function createdBriefs() {
         return $this->hasMany(Brief::class, 'instructor_id');
     }
+
+    public function scopeRole($query, string $role)
+    {
+        return $query->where('role', $role);
+    }
 }
