@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
@@ -18,9 +19,7 @@ class ClassroomController extends Controller
         return view('pages.admin.classrooms.index', compact('classrooms'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -33,9 +32,7 @@ class ClassroomController extends Controller
         return redirect()->route('admin.classrooms.index')->with('success', 'Classroom created!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Classroom $classroom)
     {
         $request->validate([
@@ -48,9 +45,7 @@ class ClassroomController extends Controller
         return redirect()->route('admin.classrooms.index')->with('success', 'Classroom updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Classroom $classroom)
     {
         $classroom->delete();
