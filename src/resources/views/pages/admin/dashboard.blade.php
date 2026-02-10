@@ -88,10 +88,10 @@
                             <td class="px-10 py-6">
                                 <div class="flex items-center gap-4">
                                     <div class="h-10 w-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-[10px] font-black uppercase group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
-                                        {{ substr($user->firstName, 0, 1) }}{{ substr($user->lastName, 0, 1) }}
+                                        {{ substr($user->first_name, 0, 1) }}{{ substr($user->last_name, 0, 1) }}
                                     </div>
                                     <div>
-                                        <p class="text-sm font-black text-slate-800">{{ $user->firstName }} {{ $user->lastName }}</p>
+                                        <p class="text-sm font-black text-slate-800">{{ $user->first_name }} {{ $user->last_name }}</p>
                                         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">{{ $user->email }}</p>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                         </div>
                         <div class="flex-1 overflow-hidden">
                             <p class="text-xs font-black text-slate-800 truncate group-hover:text-indigo-600 transition-colors">{{ $brief->title }}</p>
-                            <p class="text-[9px] text-slate-400 font-bold uppercase mt-0.5 tracking-tighter">Instructor_ID: {{ $brief->instructor->firstName ?? 'System' }}</p>
+                            <p class="text-[9px] text-slate-400 font-bold uppercase mt-0.5 tracking-tighter">Instructor_ID: {{ $brief->instructor->first_name ?? 'System' }}</p>
                         </div>
                     </div>
                     @endforeach

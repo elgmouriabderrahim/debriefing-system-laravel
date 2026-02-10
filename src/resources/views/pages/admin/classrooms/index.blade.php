@@ -60,7 +60,7 @@
                     <div class="flex flex-wrap gap-2">
                         @forelse($classroom->instructors as $instructor)
                             <span class="inline-flex items-center px-3 py-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-black rounded-lg shadow-sm">
-                                {{ $instructor->firstName }}
+                                {{ $instructor->first_name }}
                             </span>
                         @empty
                             <span class="text-[10px] text-slate-400 font-bold italic text-opacity-50">Unassigned</span>

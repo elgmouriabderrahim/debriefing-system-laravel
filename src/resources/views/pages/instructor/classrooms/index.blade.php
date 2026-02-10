@@ -37,7 +37,7 @@
 
                 <div class="flex items-center gap-3">
                     <a href="{{ route('instructor.classrooms.show', $class->id) }}" 
-                       class="px-6 py-3 bg-slate-50 text-slate-900 font-black text-xs uppercase tracking-widest rounded-xl hover:bg-indigo-600 hover:text-white transition-all">
+                       class="px-6 py-3 bg-green-50 text-green-900 font-black text-xs uppercase tracking-widest rounded-xl hover:bg-green-600 hover:text-white transition-all">
                         Manage Group
                     </a>
                 </div>

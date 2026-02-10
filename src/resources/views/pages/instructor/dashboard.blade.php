@@ -6,7 +6,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
         <div class="md:col-span-2 bg-indigo-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-xl shadow-indigo-200">
             <div class="relative z-10">
-                <h1 class="text-3xl font-black mb-2">Welcome back, {{ auth()->user()->firstName }}!</h1>
+                <h1 class="text-3xl font-black mb-2">Welcome back, {{ auth()->user()->first_name }}!</h1>
                 <p class="text-indigo-100 font-medium">
                     You have {{ $totalLearners }} learners across {{ $classrooms->count() }} classrooms.
                 </p>
@@ -105,7 +105,7 @@
                     <label class="flex items-center p-4 bg-slate-50 rounded-2xl border-2 border-transparent hover:border-indigo-500 transition-all cursor-pointer group">
                         <input type="checkbox" name="learner_ids[]" value="{{ $learner->id }}" class="w-5 h-5 rounded-lg border-slate-300 text-indigo-600 focus:ring-indigo-500">
                         <div class="ml-4">
-                            <p class="text-sm font-black text-slate-900 leading-none group-hover:text-indigo-600">{{ $learner->firstName }} {{ $learner->lastName }}</p>
+                            <p class="text-sm font-black text-slate-900 leading-none group-hover:text-indigo-600">{{ $learner->first_name }} {{ $learner->last_name }}</p>
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">{{ $learner->email }}</p>
                         </div>
                     </label>

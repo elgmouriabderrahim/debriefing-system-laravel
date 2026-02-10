@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Classroom;
 
 class LearnersController extends Controller
 {
@@ -20,5 +21,12 @@ class LearnersController extends Controller
             ->update(['classroom_id' => $request->classroom_id]);
 
         return redirect()->back()->with('success', count($request->learner_ids) . ' learners assigned successfully!');
+    }
+
+    public function unassign(Classroom $classroom, User $user)
+    {
+        $user->update(['classroom_id' => null]);
+
+        return redirect()->back()->with('success', 'Learner unassigned successfully.');
     }
 }

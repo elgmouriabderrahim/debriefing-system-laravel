@@ -52,7 +52,9 @@ Route::middleware(['role:instructor'])->prefix('instructor')->name('instructor.'
     Route::get('dashboard', [InstructorDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('learners/assign', [LearnersController::class, 'assign'])->name('learners.assign');
-
+    Route::patch('/classrooms/{classroom}/unassign/{user}', [LearnersController::class, 'unassign'])
+     ->name('classrooms.unassign');
+    
     Route::get('classrooms', [ClassroomsController::class, 'index'])->name('classrooms.index');
     Route::get('classrooms/{classroom}', [ClassroomsController::class, 'show'])->name('classrooms.show');
     Route::resource('briefs', BriefsController::class);

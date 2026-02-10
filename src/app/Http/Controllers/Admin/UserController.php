@@ -22,8 +22,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'role' => 'required|in:instructor,learner', // Admin usually created via seeder/CLI
             'password' => 'required|min:5',
@@ -33,8 +33,8 @@ class UserController extends Controller
 
         DB::transaction(function () use ($request) {
             $user = User::create([
-                'firstName' => $request->firstName,
-                'lastName' => $request->lastName,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
                 'email' => $request->email,
                 'role' => $request->role,
                 'password' => Hash::make($request->password),
@@ -52,15 +52,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'classroom_ids' => 'nullable|array',
             'classroom_ids.*' => 'exists:classrooms,id',
         ]);
 
         DB::transaction(function () use ($request, $user) {
-            $userData = $request->only(['firstName', 'lastName', 'email']);
+            $userData = $request->only(['first_name', 'last_name', 'email']);
 
             if ($request->filled('password')) {
                 $userData['password'] = Hash::make($request->password);
