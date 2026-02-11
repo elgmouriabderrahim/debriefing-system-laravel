@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title','Debriefings-system | Classroom')
 @section('content')
 <div class="max-w-[1400px] mx-auto pb-20">
     <div class="flex items-center justify-between mb-10">

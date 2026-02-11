@@ -15,6 +15,11 @@ use App\Http\Controllers\Instructor\LearnersController;
 use App\Http\Controllers\Instructor\ClassroomsController;
 use App\Http\Controllers\Instructor\BriefsController;
 
+
+use App\Http\Controllers\Learner\LearnerDashboardController;
+use App\Http\Controllers\Learner\LearnerBriefsController;
+use App\Http\Controllers\Learner\LearnerDebriefingsController;
+
 Route::get('/', function () {
     if (!Auth::check()) {
         return redirect()->route('login');
@@ -58,4 +63,10 @@ Route::middleware(['role:instructor'])->prefix('instructor')->name('instructor.'
     Route::get('classrooms', [ClassroomsController::class, 'index'])->name('classrooms.index');
     Route::get('classrooms/{classroom}', [ClassroomsController::class, 'show'])->name('classrooms.show');
     Route::resource('briefs', BriefsController::class);
+});
+
+Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(function() {
+    Route::get('dashboard', [LearnerDashboardController::class, 'index'])->name('dashboard');
+    Route::get('briefs', [LearnerBriefsController::class, 'index'])->name('briefs.index');
+    Route::get('debriefs', [LearnerDebriefingsController::class, 'index'])->name('debriefings.index');
 });

@@ -47,6 +47,6 @@ class AuthController extends Controller
             return redirect()->intended('/admin/dashboard');
         }
 
-        return redirect()->intended('/learner/briefs');
+        return redirect()->intended('/learner/dashboard');
     }
 }

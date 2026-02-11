@@ -1,11 +1,11 @@
 @extends('layouts.main')
-
+@section('title','Debriefings-system | Dashboard')
 @section('content')
 <div class="max-w-[1400px] mx-auto">
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
         <div class="md:col-span-2 bg-indigo-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-xl shadow-indigo-200">
-            <div class="relative z-10">
+            <div class="relative">
                 <h1 class="text-3xl font-black mb-2">Welcome back, {{ auth()->user()->first_name }}!</h1>
                 <p class="text-indigo-100 font-medium">
                     You have {{ $totalLearners }} learners across {{ $classrooms->count() }} classrooms.
@@ -81,9 +81,9 @@
         @endforelse
     </div>
 
-    <div id="manageModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
+    <div id="manageModal" class="hidden fixed inset-0  flex items-center justify-center p-6">
         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="closeManageModal()"></div>
-        <div class="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl relative z-10 p-10 overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl relative p-10 overflow-hidden flex flex-col max-h-[90vh]">
             <div class="mb-6">
                 <h3 id="modalClassTitle" class="text-2xl font-black text-slate-900 mb-1">Classroom Name</h3>
                 <p class="text-sm text-slate-500 font-medium">Assign unlinked learners to this class.</p>

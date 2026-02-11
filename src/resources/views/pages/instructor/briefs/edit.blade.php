@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title','Debriefings-system | Edit brief')
 @section('content')
 <div class="max-w-5xl mx-auto pb-20">
     <div class="flex items-end justify-between mb-12">
