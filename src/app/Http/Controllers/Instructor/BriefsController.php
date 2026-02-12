@@ -63,18 +63,14 @@ class BriefsController extends Controller
 
     public function show(Brief $brief)
     {
-        // Load the full chain: Brief -> Sprint -> Classrooms (Collection) -> Learners (Collection)
         $brief->load([
             'competences', 
             'sprint.classrooms.learners', 
             'livrables.learner'
         ]);
 
-        // 1. Get the sprint
         $sprint = $brief->sprint;
 
-        // 2. Get all learners from all classrooms linked to this sprint
-        // We use unique('id') to ensure a student isn't counted twice if they are in multiple classrooms
         $totalLearners = $sprint ? $sprint->classrooms
             ->flatMap(function ($classroom) {
                 return $classroom->learners;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Classroom;
 use App\Models\User;
+use App\Models\Sprint;
 
 class InstructorDashboardController extends Controller
 {
@@ -19,55 +20,32 @@ class InstructorDashboardController extends Controller
         $unassignedLearners = User::role('learner')->whereNull('classroom_id')->get();
         
         $briefsCount = auth()->user()->createdBriefs()->count();
+        $allSprints = Sprint::orderBy('order')->get();
 
         return view('pages.instructor.dashboard', compact(
             'classrooms', 
             'totalLearners', 
             'unassignedLearners', 
-            'briefsCount'
+            'briefsCount',
+            'allSprints'
         ));
     }
-
-    public function store(Request $request)
+    public function assignSprints(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:classrooms,name',
-            'promotion_year' => 'nullable|integer'
+        $request->validate([
+            'classroom_id' => 'required|exists:classrooms,id',
+            'sprint_ids' => 'array'
         ]);
 
-        $classroom = Classroom::create([
-            'name' => $validated['name'],
-            'promotion_year' => $request->promotion_year ?? date('Y'),
-        ]);
+        $classroom = \App\Models\Classroom::findOrFail($request->classroom_id);
 
-        $classroom->instructors()->attach(Auth()->id());
-
-        return redirect()->back()->with('success', 'Classroom created successfully!');
-    }
-
-    public function update(Request $request, Classroom $classroom)
-    {
-        if (!$classroom->instructors()->where('users.id', Auth()->id())->exists()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:classrooms,name,' . $classroom->id,
-        ]);
-
-        $classroom->update($validated);
-
-        return redirect()->back()->with('success', 'Classroom updated successfully!');
-    }
-
-    public function destroy(Classroom $classroom)
-    {
-        if (!$classroom->instructors()->where('users.id', Auth()->id())->exists()) {
+        if (!auth()->user()->classrooms->contains($classroom->id)) {
             abort(403);
         }
 
-        $classroom->delete();
+        $classroom->sprints()->sync($request->sprint_ids ?? []);
 
-        return redirect()->back()->with('success', 'Classroom removed.');
+        return back()->with('success', 'Sprints assigned successfully.');
     }
+
 }

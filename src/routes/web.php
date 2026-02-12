@@ -57,16 +57,20 @@ Route::middleware(['role:instructor'])->prefix('instructor')->name('instructor.'
     Route::get('dashboard', [InstructorDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('learners/assign', [LearnersController::class, 'assign'])->name('learners.assign');
-    Route::patch('/classrooms/{classroom}/unassign/{user}', [LearnersController::class, 'unassign'])
-     ->name('classrooms.unassign');
+    Route::patch('/classrooms/{classroom}/unassign/{user}', [LearnersController::class, 'unassign'])->name('classrooms.unassign');
     
     Route::get('classrooms', [ClassroomsController::class, 'index'])->name('classrooms.index');
     Route::get('classrooms/{classroom}', [ClassroomsController::class, 'show'])->name('classrooms.show');
     Route::resource('briefs', BriefsController::class);
+
+    Route::post('sprints/assign',[InstructorDashboardController::class, 'assignSprints'])->name('sprints.assign');
 });
 
 Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(function() {
     Route::get('dashboard', [LearnerDashboardController::class, 'index'])->name('dashboard');
     Route::get('briefs', [LearnerBriefsController::class, 'index'])->name('briefs.index');
+    Route::get('briefs/show', [LearnerBriefsController::class, 'show'])->name('briefs.show');
+    Route::get('briefs/subbmit', [LearnerBriefsController::class, 'show'])->name('briefs.submit');
+
     Route::get('debriefs', [LearnerDebriefingsController::class, 'index'])->name('debriefings.index');
 });
