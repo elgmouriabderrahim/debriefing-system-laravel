@@ -69,8 +69,8 @@ Route::middleware(['role:instructor'])->prefix('instructor')->name('instructor.'
 Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(function() {
     Route::get('dashboard', [LearnerDashboardController::class, 'index'])->name('dashboard');
     Route::get('briefs', [LearnerBriefsController::class, 'index'])->name('briefs.index');
-    Route::get('briefs/show', [LearnerBriefsController::class, 'show'])->name('briefs.show');
-    Route::get('briefs/subbmit', [LearnerBriefsController::class, 'show'])->name('briefs.submit');
+    Route::get('briefs/{brief}', [LearnerBriefsController::class, 'show'])->name('briefs.show');
+    Route::get('briefs/{brief}/submit', [LearnerBriefsController::class, 'submit'])->name('briefs.submit');
 
     Route::get('debriefs', [LearnerDebriefingsController::class, 'index'])->name('debriefings.index');
 });

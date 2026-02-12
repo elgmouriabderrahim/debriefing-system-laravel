@@ -57,7 +57,7 @@
 
                                 <div class="flex items-center gap-2">
                                     <a href="{{ route('learner.briefs.show', $brief->id) }}" 
-                                       class="px-4 py-2 rounded-xl text-slate-400 hover:text-slate-900 font-bold text-[11px] uppercase transition-all">
+                                    class="px-4 py-2 rounded-xl text-slate-400 hover:text-slate-900 font-bold text-[11px] uppercase transition-all">
                                         Details
                                     </a>
 
