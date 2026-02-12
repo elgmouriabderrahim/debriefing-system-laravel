@@ -19,6 +19,7 @@ use App\Http\Controllers\Instructor\BriefsController;
 use App\Http\Controllers\Learner\LearnerDashboardController;
 use App\Http\Controllers\Learner\LearnerBriefsController;
 use App\Http\Controllers\Learner\LearnerDebriefingsController;
+use App\Http\Controllers\Learner\LivrableController;
 
 Route::get('/', function () {
     if (!Auth::check()) {
@@ -71,6 +72,9 @@ Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(
     Route::get('briefs', [LearnerBriefsController::class, 'index'])->name('briefs.index');
     Route::get('briefs/{brief}', [LearnerBriefsController::class, 'show'])->name('briefs.show');
     Route::get('briefs/{brief}/submit', [LearnerBriefsController::class, 'submit'])->name('briefs.submit');
+
+    Route::post('/livrables/store', [LivrableController::class, 'store'])->name('livrables.store');
+
 
     Route::get('debriefs', [LearnerDebriefingsController::class, 'index'])->name('debriefings.index');
 });
