@@ -30,31 +30,43 @@
                 </div>
 
                 <div class="space-y-4">
-                    @forelse($brief->livrables->groupBy('learner_id') as $learnerId => $submissions)
-                        @php $firstSub = $submissions->first(); @endphp
-                        <div class="group bg-white border border-slate-100 rounded-[2rem] p-6 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300">
+                    @php
+                        $allLearners = $brief->sprint->classrooms->flatMap->learners->unique('id');
+                    @endphp
+
+                    @forelse($allLearners as $learner)
+                        @php 
+                            $submissions = $brief->livrables->where('learner_id', $learner->id);
+                            $hasSubmitted = $submissions->isNotEmpty();
+                        @endphp
+
+                        <div class="group bg-white border {{ $hasSubmitted ? 'border-slate-100' : 'border-rose-100 bg-rose-50/20' }} rounded-[2rem] p-6 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300">
                             <div class="flex items-center justify-between mb-6">
                                 <div class="flex items-center gap-4">
-                                    <div class="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                                    <div class="h-12 w-12 rounded-2xl {{ $hasSubmitted ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600' : 'bg-rose-100 text-rose-600 group-hover:bg-rose-600' }} flex items-center justify-center group-hover:text-white transition-all">
                                         <span class="text-xs font-black">
-                                            {{ strtoupper(substr($firstSub->learner->first_name ?? 'U', 0, 1) . substr($firstSub->learner->last_name ?? 'N', 0, 1)) }}
+                                            {{ strtoupper(substr($learner->first_name, 0, 1) . substr($learner->last_name, 0, 1)) }}
                                         </span>
                                     </div>
                                     <div>
-                                        <h4 class="text-sm font-black text-slate-900">{{ $firstSub->learner->first_name }} {{ $firstSub->learner->last_name }}</h4>
-                                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{{ $submissions->count() }} Submissions</p>
+                                        <h4 class="text-sm font-black text-slate-900">{{ $learner->first_name }} {{ $learner->last_name }}</h4>
+                                        @if($hasSubmitted)
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{{ $submissions->count() }} Submissions</p>
+                                        @else
+                                            <span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-600 text-[8px] font-black uppercase tracking-widest">Missing Submission</span>
+                                        @endif
                                     </div>
                                 </div>
                                 
-                                <a href="{{ route('instructor.debriefings.debrief', [$brief->id, $firstSub->learner_id]) }}" 
-                                   class="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-indigo-600 transition-all shadow-lg shadow-slate-200">
+                                <a href="{{ route('instructor.debriefings.debrief', [$brief->id, $learner->id]) }}" 
+                                   class="flex items-center gap-2 px-4 py-2 {{ $hasSubmitted ? 'bg-slate-900' : 'bg-slate-400 pointer-events-none opacity-50' }} text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-indigo-600 transition-all shadow-lg shadow-slate-200">
                                     <span>Debrief Student</span>
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke-width="2.5"/></svg>
                                 </a>
                             </div>
 
                             <div class="space-y-2">
-                                @foreach($submissions as $livrable)
+                                @forelse($submissions as $livrable)
                                     <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
                                         <div class="flex items-center gap-3 overflow-hidden">
                                             <div class="h-2 w-2 rounded-full bg-emerald-400"></div>
@@ -68,13 +80,16 @@
                                         </div>
                                         <span class="text-[9px] font-bold text-slate-400 whitespace-nowrap ml-4">{{ $livrable->created_at->diffForHumans() }}</span>
                                     </div>
-                                @endforeach
+                                @empty
+                                    <div class="text-center py-2">
+                                        <p class="text-[10px] font-bold text-rose-400 italic">No files provided for evaluation.</p>
+                                    </div>
+                                @endforelse
                             </div>
                         </div>
                     @empty
                         <div class="py-20 flex flex-col items-center justify-center bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
-                            <svg class="w-12 h-12 text-slate-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                            <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Awaiting Submissions</p>
+                            <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">No learners found for this sprint</p>
                         </div>
                     @endforelse
                 </div>
@@ -97,32 +112,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="p-8 rounded-[2.5rem] bg-white border border-slate-100 shadow-sm">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Project Details</h4>
-                        <div class="space-y-4">
-                            <div class="flex justify-between">
-                                <span class="text-xs font-bold text-slate-400">Phase</span>
-                                <span class="text-xs font-black text-slate-900">{{ $brief->sprint->name ?? 'N/A' }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-xs font-bold text-slate-400">Type</span>
-                                <span class="text-xs font-black text-slate-900 uppercase tracking-tighter">{{ $brief->type }}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8 pt-8 border-t border-slate-50">
-                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Competencies</h4>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($brief->competences as $comp)
-                                    <span class="px-3 py-1 bg-slate-50 text-[10px] font-black text-slate-600 rounded-lg border border-slate-100 uppercase">{{ $comp->code }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

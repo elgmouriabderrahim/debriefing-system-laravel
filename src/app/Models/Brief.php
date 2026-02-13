@@ -24,8 +24,10 @@ class Brief extends Model
         return $this->hasMany(Livrable::class);
     }
 
-    public function competences(){
-        return $this->belongsToMany(Competence::class);
+    public function competences() {
+        return $this->belongsToMany(Competence::class)
+                    ->withPivot('level')
+                    ->withTimestamps();
     }
 
     public function debriefings(){

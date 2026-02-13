@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Brief;
 use App\Models\Livrable;
 use App\Models\User;
+use App\Models\Debriefing;
+use App\Models\Competence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-use \App\Models\Debriefing;
-use \App\Models\Competence;
 
 class InstructorDebriefingsController extends Controller
 {
@@ -29,22 +28,31 @@ class InstructorDebriefingsController extends Controller
 
     public function show(Brief $brief)
     {
+        if ($brief->instructor_id !== Auth::id()) abort(403);
+
         $brief->load(['livrables.learner', 'sprint', 'competences']);
 
-        $totalLearners = User::where('role', 'learner')->count(); 
+        $totalLearners = User::role('learner')
+            ->whereHas('classroom.sprints', function($q) use ($brief) {
+                $q->where('sprints.id', $brief->sprint_id);
+            })->count();
 
         return view('pages.instructor.debriefings.show', compact('brief', 'totalLearners'));
     }
 
-   public function debrief(Brief $brief, User $learner)
+    public function debrief(Brief $brief, User $learner)
     {
+        if ($brief->instructor_id !== Auth::id()) abort(403);
+
         $submissions = Livrable::where('brief_id', $brief->id)
             ->where('learner_id', $learner->id)
             ->get();
 
         $existingDebrief = Debriefing::where('brief_id', $brief->id)
             ->where('learner_id', $learner->id)
-            ->with('competences')
+            ->with(['competences' => function($q) {
+                $q->withPivot('level', 'validate');
+            }])
             ->first();
 
         return view('pages.instructor.debriefings.debrief', compact('brief', 'learner', 'submissions', 'existingDebrief'));
@@ -53,49 +61,31 @@ class InstructorDebriefingsController extends Controller
     public function storeEvaluation(Request $request, Brief $brief, User $learner)
     {
         $request->validate([
-            'comp' => 'nullable|array',
-            'feedback' => 'nullable|string'
+            'feedback' => 'nullable|string',
+            'competences' => 'required|array',
+            'competences.*.id' => 'exists:competences,id',
+            'competences.*.level' => 'required|in:imiter,s_adapter,transposer',
+            'competences.*.validate' => 'required|in:valide,non_valide,pending',
         ]);
 
-        $existingDebrief = Debriefing::where('brief_id', $brief->id)
-            ->where('learner_id', $learner->id)
-            ->first();
-
-        if ($existingDebrief) {
-            $existingDebrief->update([
+        $debriefing = Debriefing::updateOrCreate(
+            ['brief_id' => $brief->id, 'learner_id' => $learner->id],
+            [
                 'comment' => $request->feedback,
-                'instructor_id' => auth()->id(),
-            ]);
-            $message = "Comment updated. Skill evaluation was already locked.";
-        } else {
-            $debriefing = Debriefing::create([
-                'brief_id' => $brief->id,
-                'learner_id' => $learner->id,
-                'comment' => $request->feedback,
-                'instructor_id' => auth()->id(),
-            ]);
+                'instructor_id' => Auth::id(),
+            ]
+        );
 
-            if ($request->has('comp')) {
-                $validatedCompetenceIds = [];
-                foreach ($request->comp as $idFromForm => $selectedLevel) {
-
-                    $originalComp = Competence::find($idFromForm);
-                    
-                    if ($originalComp) {
-                        $matchingComp = Competence::where('code', $originalComp->code)
-                            ->where('level', $selectedLevel)
-                            ->first();
-
-                        if ($matchingComp) {
-                            $validatedCompetenceIds[] = $matchingComp->id;
-                        }
-                    }
-                }
-                $debriefing->competences()->sync($validatedCompetenceIds);
-            }
-            $message = "Evaluation and skills recorded successfully.";
+        $syncData = [];
+        foreach ($request->competences as $id => $data) {
+            $syncData[$id] = [
+                'level' => $data['level'],
+                'validate' => $data['validate']
+            ];
         }
 
-        return redirect()->back()->with('success', $message);
+        $debriefing->competences()->sync($syncData);
+
+        return redirect()->back()->with('success', 'Evaluation recorded successfully.');
     }
 }

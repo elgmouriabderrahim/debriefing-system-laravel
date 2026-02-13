@@ -63,6 +63,10 @@ class BriefsController extends Controller
 
     public function show(Brief $brief)
     {
+        if ($brief->instructor_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $brief->load([
             'competences', 
             'sprint.classrooms.learners', 
@@ -79,6 +83,10 @@ class BriefsController extends Controller
 
     public function edit(Brief $brief)
     {
+        if ($brief->instructor_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $sprints = Sprint::all();
         $competences = Competence::all();
         
@@ -89,6 +97,10 @@ class BriefsController extends Controller
 
     public function update(Request $request, Brief $brief)
     {
+        if ($brief->instructor_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|in:individual,group',
@@ -103,7 +115,6 @@ class BriefsController extends Controller
 
         $brief->update($validated);
 
-        // Prepare the sync data with pivot levels
         $syncData = [];
         foreach ($request->competences as $id => $data) {
             if (isset($data['id'])) {
@@ -118,6 +129,10 @@ class BriefsController extends Controller
 
     public function destroy(Brief $brief)
     {
+        if ($brief->instructor_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $brief->delete();
         return redirect()->route('instructor.briefs.index')->with('success', 'Brief deleted successfully!');
     }
