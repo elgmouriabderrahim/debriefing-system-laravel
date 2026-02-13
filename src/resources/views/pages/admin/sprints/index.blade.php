@@ -94,17 +94,29 @@
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Sprint Title</label>
-                        <input type="text" name="name" id="name" required class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        <input type="text" name="name" id="name" value="{{ old('name') }}"  
+                            class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('name') ? 'border-rose-500' : 'border-transparent' }} focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        @error('name')
+                            <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-2">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Duration (Days)</label>
-                            <input type="number" name="duration_days" id="duration_days" required class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                            <input type="number" name="duration_days" id="duration_days" value="{{ old('duration_days') }}"  
+                                class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('duration_days') ? 'border-rose-500' : 'border-transparent' }} focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                            @error('duration_days')
+                                <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="space-y-2">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Order Index</label>
-                            <input type="number" name="order" id="order" required class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                            <input type="number" name="order" id="order" value="{{ old('order') }}" 
+                                class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('order') ? 'border-rose-500' : 'border-transparent' }} focus:border-indigo-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                            @error('order')
+                                <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -158,6 +170,7 @@
     });
 
     function initEdit(sprint) {
+        clearValidationErrors();
         document.getElementById('modalTitle').innerText = 'Update Sprint';
         form.action = `/admin/sprints/${sprint.id}`;
         document.getElementById('methodContainer').innerHTML = '@method("PUT")';
@@ -187,5 +200,20 @@
     window.onkeydown = (e) => { 
         if(e.key === "Escape") { closeModal(); closeConfirm(); } 
     };
+
+    function clearValidationErrors() {
+        const errorMessages = document.querySelectorAll('.text-rose-500.font-bold');
+        errorMessages.forEach(msg => msg.remove());
+
+        const errorInputs = document.querySelectorAll('.border-rose-500');
+        errorInputs.forEach(input => {
+            input.classList.remove('border-rose-500');
+            input.classList.add('border-transparent');
+        });
+    }
+
+    @if ($errors->any())
+        window.onload = () => openModal();
+    @endif
 </script>
 @endsection

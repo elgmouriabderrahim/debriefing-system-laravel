@@ -135,11 +135,11 @@
     <div id="confirmModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-6">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeConfirm()"></div>
         <div class="bg-white max-w-sm w-full rounded-[2.5rem] p-8 relative z-10 text-center shadow-2xl border border-white">
-            <h4 class="text-2xl font-black text-slate-900 mb-2">Archive Class?</h4>
-            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Remove <span id="targetName" class="font-bold text-slate-900"></span> from active inventory?</p>
+            <h4 class="text-2xl font-black text-slate-900 mb-2">Delete Class?</h4>
+            <p class="text-slate-500 text-sm mb-8 leading-relaxed">Remove <span id="targetName" class="font-bold text-slate-900"></span> classroom?</p>
             <div class="flex gap-3">
                 <button onclick="closeConfirm()" class="flex-1 py-4 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-2xl transition-all">Cancel</button>
-                <button id="confirmDeleteBtn" class="flex-1 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-rose-200">Archive</button>
+                <button id="confirmDeleteBtn" class="flex-1 py-4 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-rose-200">Delete</button>
             </div>
         </div>
     </div>
