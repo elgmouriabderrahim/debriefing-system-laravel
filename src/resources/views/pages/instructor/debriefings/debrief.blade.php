@@ -64,7 +64,6 @@
                         <div class="space-y-6 mb-8">
                             @foreach($brief->competences as $comp)
                             @php
-                                // Check if this competence was already evaluated in an existing debrief
                                 $eval = $existingDebrief ? $existingDebrief->competences->where('id', $comp->id)->first() : null;
                                 $currentLevel = $eval ? $eval->pivot->level : '';
                                 $currentStatus = $eval ? $eval->pivot->validate : 'pending';
