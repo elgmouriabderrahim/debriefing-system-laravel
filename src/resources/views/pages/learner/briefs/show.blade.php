@@ -54,16 +54,13 @@
                                     </a>
                                 </div>
                             </div>
-                            <span class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-sm {{ $subValid === true ? 'bg-emerald-500 text-white' : ($subValid === false ? 'bg-rose-500 text-white' : 'bg-slate-100 text-slate-400') }}">
-                                {{ $subValid === true ? 'Validated' : ($subValid === false ? 'Rejected' : 'Pending Review') }}
-                            </span>
                         </div>
 
                         @if($sub->content)
                         <div class="mt-4 p-5 rounded-2xl border {{ $subValid === true ? 'bg-white/60 border-emerald-100' : ($subValid === false ? 'bg-white/60 border-rose-100' : 'bg-slate-50 border-slate-100') }}">
                             <label class="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2">Learner Notes</label>
                             <p class="text-sm font-bold text-slate-700 leading-relaxed italic">
-                                "{{ $sub->content }}"
+                                {{ $sub->content }}
                             </p>
                         </div>
                         @endif
@@ -83,7 +80,7 @@
                     <div class="space-y-2">
                         <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Feedback Message</label>
                         <p class="text-slate-700 font-bold italic text-lg leading-relaxed">
-                            "{{ $evaluation->comment ?? 'Evaluation complete.' }}"
+                            {{ $evaluation->comment ?? 'Evaluation complete.' }}
                         </p>
                     </div>
 
@@ -93,8 +90,8 @@
                             $isValidated = $comp->pivot->validate === 'valide'; 
                             $lvl = strtolower($comp->pivot->level);
                         @endphp
-                        <div class="p-6 rounded-3xl border transition-all {{ $isValidated ? 'bg-emerald-50/50 border-emerald-100 shadow-emerald-50' : 'bg-rose-50/50 border-rose-100 shadow-rose-50' }} shadow-sm">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                        <div class="p-4 rounded-3xl border transition-all {{ $isValidated ? 'bg-emerald-50/50 border-emerald-100 shadow-emerald-50' : 'bg-rose-50/50 border-rose-100 shadow-rose-50' }} shadow-sm">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div class="flex items-center gap-3">
                                     <span class="px-2 py-1 bg-slate-900 text-white text-[10px] font-black rounded-lg leading-none">{{ $comp->code }}</span>
                                     <h4 class="text-sm font-black text-slate-800 uppercase tracking-tight">{{ $comp->label }}</h4>
@@ -107,12 +104,6 @@
                                         {{ $isValidated ? 'Validated' : 'Non Validated' }}
                                     </span>
                                 </div>
-                            </div>
-
-                            <div class="h-2 bg-white/50 border border-white rounded-full flex gap-1.5 p-1">
-                                <div class="h-full rounded-full flex-1 {{ in_array($lvl, ['imiter', 's_adapter', 'transposer']) ? ($isValidated ? 'bg-emerald-500' : 'bg-rose-500') : 'bg-slate-200' }}"></div>
-                                <div class="h-full rounded-full flex-1 {{ in_array($lvl, ['s_adapter', 'transposer']) ? ($isValidated ? 'bg-emerald-500' : 'bg-rose-500') : 'bg-slate-200' }}"></div>
-                                <div class="h-full rounded-full flex-1 {{ $lvl == 'transposer' ? ($isValidated ? 'bg-emerald-500' : 'bg-rose-500') : 'bg-slate-200' }}"></div>
                             </div>
                         </div>
                         @endforeach
