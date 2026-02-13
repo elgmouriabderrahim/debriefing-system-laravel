@@ -20,8 +20,7 @@ class Debriefing extends Model
 
     public function competences() {
         return $this->belongsToMany(Competence::class, 'competence_debriefing')
-                    ->withPivot('level', 'validate')
-                    ->withTimestamps();
+                    ->withPivot('level', 'validate');
     }
 
     public function instructor()

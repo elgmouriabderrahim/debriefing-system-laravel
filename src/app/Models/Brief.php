@@ -26,8 +26,7 @@ class Brief extends Model
 
     public function competences() {
         return $this->belongsToMany(Competence::class)
-                    ->withPivot('level')
-                    ->withTimestamps();
+                    ->withPivot('level');
     }
 
     public function debriefings(){
