@@ -2,6 +2,7 @@
 @section('title','Debriefings-system | Classrooms')
 @section('content')
 <div class="max-w-[1400px] mx-auto pb-20">
+
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
         <div>
             <h1 class="text-4xl font-black text-slate-900 tracking-tight">Classroom Inventory</h1>
@@ -90,6 +91,7 @@
     <div id="classroomModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6">
         <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-md" onclick="closeModal()"></div>
         <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative z-10 overflow-hidden border border-white">
+        
             <div class="p-10">
                 <div class="flex justify-between items-center mb-8">
                     <h3 id="modalTitle" class="text-xl font-black text-slate-900 tracking-tight">Classroom Settings</h3>
@@ -104,12 +106,20 @@
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Classroom Name</label>
-                        <input type="text" name="name" id="name" required class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        <input type="text" name="name" id="name" value="{{ old('name') }}" 
+                            class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('name') ? 'border-rose-500' : 'border-transparent' }} focus:border-blue-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        @error('name')
+                            <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Promotion Year</label>
-                        <input type="number" name="promotion_year" id="promotion_year" required class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-blue-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        <input type="number" name="promotion_year" id="promotion_year" value="{{ old('promotion_year') }}" 
+                            class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('promotion_year') ? 'border-rose-500' : 'border-transparent' }} focus:border-blue-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        @error('promotion_year')
+                            <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="pt-4">
@@ -184,5 +194,9 @@
     document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
         if(currentDeleteId) document.getElementById(`delete-form-${currentDeleteId}`).submit();
     });
+
+    @if ($errors->any())
+        window.onload = () => openModal();
+    @endif
 </script>
 @endsection
