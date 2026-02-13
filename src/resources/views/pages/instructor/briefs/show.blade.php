@@ -120,13 +120,20 @@
                         </div>
 
                         <div>
-                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Competencies</h4>
-                            <div class="flex flex-wrap gap-2">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Required Competencies</h4>
+                            <div class="space-y-3">
                                 @foreach($brief->competences as $comp)
-                                    <div class="group relative">
-                                        <span class="inline-block px-3 py-1.5 bg-slate-50 text-[10px] font-black text-slate-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-colors cursor-help uppercase tracking-tight">
-                                            {{ $comp->code }}
-                                        </span>
+                                    <div class="group flex items-center justify-between p-3 rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 transition-all">
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] font-black text-indigo-600 uppercase tracking-tighter">{{ $comp->code }}</span>
+                                            <span class="text-[11px] font-bold text-slate-700 leading-tight">{{ $comp->label }}</span>
+                                        </div>
+                                        
+                                        <div class="px-2 py-1 rounded-lg bg-white border border-slate-200 shadow-sm">
+                                            <span class="text-[9px] font-black text-slate-500 uppercase italic">
+                                                {{ str_replace('_', ' ', $comp->pivot->level) }}
+                                            </span>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>

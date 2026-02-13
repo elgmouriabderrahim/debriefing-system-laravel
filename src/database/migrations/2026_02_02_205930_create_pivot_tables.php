@@ -24,11 +24,14 @@ return new class extends Migration
         Schema::create('brief_competence', function (Blueprint $table) {
             $table->foreignId('brief_id')->constrained()->onDelete('cascade');
             $table->foreignId('competence_id')->constrained()->onDelete('cascade');
+            $table->enum('level', ['imiter', 's_adapter', 'transposer'])->nullable();
         });
 
         Schema::create('competence_debriefing', function (Blueprint $table) {
             $table->foreignId('competence_id')->constrained()->onDelete('cascade');
             $table->foreignId('debriefing_id')->constrained()->onDelete('cascade');
+            $table->enum('level', ['imiter', 's_adapter', 'transposer'])->nullable();
+            $table->enum('validate', ['valide', 'non_valide', 'pending'])->nullable()->default(null);
         });    
     }
 

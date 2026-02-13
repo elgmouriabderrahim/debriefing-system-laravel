@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('competences', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
-            $table->enum('level', ['imiter', 's_adapter', 'transposer'])->nullable();
             $table->string('label', 10);
             $table->text('code');
         });

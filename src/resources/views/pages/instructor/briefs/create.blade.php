@@ -47,23 +47,34 @@
             </div>
 
             <div class="space-y-4">
-                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Target Competencies</label>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Target Competencies & Required Levels</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach($competences as $competence)
-                    <label class="group relative cursor-pointer">
-                        <input type="checkbox" name="competence_ids[]" value="{{ $competence->id }}" class="peer sr-only" 
-                            {{ is_array(old('competence_ids')) && in_array($competence->id, old('competence_ids')) ? 'checked' : '' }}>
-                        <div class="px-5 py-4 rounded-2xl border-2 border-slate-50 bg-slate-50 transition-all peer-checked:border-emerald-500 peer-checked:bg-emerald-50 group-hover:border-slate-200">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="text-[9px] font-black text-slate-400 group-hover:text-slate-500 uppercase tracking-tighter peer-checked:group-hover:text-emerald-600">{{ $competence->code }}</span>
-                                <div class="w-2 h-2 rounded-full bg-slate-200 peer-checked:group-[]:bg-emerald-500 transition-colors"></div>
+                    <div class="group relative">
+                        <input type="checkbox" name="competences[{{ $competence->id }}][id]" value="{{ $competence->id }}" 
+                            id="comp_{{ $competence->id }}" class="peer sr-only"
+                            {{ is_array(old('competences')) && isset(old('competences')[$competence->id]) ? 'checked' : '' }}>
+                        
+                        <div class="flex items-center gap-4 px-6 py-5 rounded-[2rem] border-2 border-slate-50 bg-slate-50 transition-all peer-checked:border-emerald-500 peer-checked:bg-emerald-50 group-hover:border-slate-200">
+                            <label for="comp_{{ $competence->id }}" class="flex-1 cursor-pointer">
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-tighter block mb-1 peer-checked:text-emerald-600">{{ $competence->code }}</span>
+                                <p class="text-sm font-bold text-slate-700 leading-tight">{{ $competence->label }}</p>
+                            </label>
+
+                            <div class="flex flex-col gap-1.5 items-end">
+                                <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Required Level</span>
+                                <select name="competences[{{ $competence->id }}][level]" 
+                                    class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-[10px] font-black text-slate-700 outline-none focus:border-emerald-500 transition-all cursor-pointer">
+                                    <option value="imiter" {{ (isset(old('competences')[$competence->id]['level']) && old('competences')[$competence->id]['level'] == 'imiter') ? 'selected' : '' }}>Imiter</option>
+                                    <option value="s_adapter" {{ (isset(old('competences')[$competence->id]['level']) && old('competences')[$competence->id]['level'] == 's_adapter') ? 'selected' : '' }}>S'adapter</option>
+                                    <option value="transposer" {{ (isset(old('competences')[$competence->id]['level']) && old('competences')[$competence->id]['level'] == 'transposer') ? 'selected' : '' }}>Transposer</option>
+                                </select>
                             </div>
-                            <p class="text-sm font-bold text-slate-700 peer-checked:group-[]:text-emerald-900">{{ $competence->label }}</p>
                         </div>
-                    </label>
+                    </div>
                     @endforeach
                 </div>
-                @error('competence_ids') <p class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</p> @enderror
+                @error('competences') <p class="text-rose-500 text-xs font-bold mt-1 ml-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -71,13 +82,13 @@
                     <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Work Format</label>
                     <div class="grid grid-cols-2 gap-4">
                         <label class="relative cursor-pointer">
-                            <input type="radio" name="type" value="individual" class="peer sr-only" checked>
+                            <input type="radio" name="type" value="individual" class="peer sr-only" {{ old('type', 'individual') == 'individual' ? 'checked' : '' }}>
                             <div class="p-4 text-center rounded-2xl border-2 border-slate-50 bg-slate-50 font-bold text-slate-500 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 transition-all">
                                 Individual
                             </div>
                         </label>
                         <label class="relative cursor-pointer">
-                            <input type="radio" name="type" value="group" class="peer sr-only">
+                            <input type="radio" name="type" value="group" class="peer sr-only" {{ old('type') == 'group' ? 'checked' : '' }}>
                             <div class="p-4 text-center rounded-2xl border-2 border-slate-50 bg-slate-50 font-bold text-slate-500 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-checked:text-indigo-600 transition-all">
                                 Group
                             </div>
@@ -90,7 +101,7 @@
                     <div class="relative">
                         <select name="sprint_id" class="w-full px-8 py-4.5 bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white rounded-2xl font-bold text-slate-700 outline-none transition-all appearance-none">
                             @foreach($sprints as $sprint)
-                                <option value="{{ $sprint->id }}">{{ $sprint->name }}</option>
+                                <option value="{{ $sprint->id }}" {{ old('sprint_id') == $sprint->id ? 'selected' : '' }}>{{ $sprint->name }}</option>
                             @endforeach
                         </select>
                         <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">

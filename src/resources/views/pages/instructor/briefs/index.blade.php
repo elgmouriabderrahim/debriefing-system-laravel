@@ -36,10 +36,10 @@
 
                 <div class="flex flex-wrap gap-2 mb-6">
                     @foreach($brief->competences as $comp)
-                        <span class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[9px] font-black rounded-lg border border-slate-100 uppercase tracking-tighter hover:bg-indigo-600 hover:text-white transition-colors cursor-default">
-                            {{ $comp->code }}
-                        </span>
-                    @endforeach
+                    <span class="px-2.5 py-1 bg-slate-50 text-slate-500 text-[9px] font-black rounded-lg border border-slate-100 uppercase tracking-tighter">
+                        {{ $comp->code }} • {{ $comp->pivot->level }}
+                    </span>
+                @endforeach
                 </div>
             </div>
 
@@ -53,7 +53,6 @@
                 </div>
                 <div class="border-l border-slate-100 pl-8">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Deliverables</p>
-                    {{-- Fixed: Count unique learner IDs --}}
                     <span class="text-sm font-bold text-slate-700">{{ $brief->livrables->unique('learner_id')->count() }} Students</span>
                 </div>
             </div>
@@ -104,8 +103,8 @@
                 text: "All student submissions for this brief will also be removed!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#0f172a', // slate-900
-                cancelButtonColor: '#f1f5f9', // slate-100
+                confirmButtonColor: '#0f172a',
+                cancelButtonColor: '#f1f5f9',
                 confirmButtonText: 'Yes, delete it',
                 cancelButtonText: 'Cancel',
                 customClass: {

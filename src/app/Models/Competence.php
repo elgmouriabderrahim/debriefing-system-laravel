@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Competence extends Model
 {
     protected $fillable = [
-        'level',
+
         'label',
-        'code'
+        'code',
+        'validate'
     ];
 
     public function briefs(){
