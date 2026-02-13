@@ -8,6 +8,7 @@ class Livrable extends Model
 {
     protected $fillable = [
         'content',
+        'url',
         'learner_id',
         'brief_id'
     ];

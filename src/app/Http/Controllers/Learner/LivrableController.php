@@ -5,24 +5,23 @@ namespace App\Http\Controllers\Learner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use \App\Models\Livrable;
+
 class LivrableController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
             'brief_id' => 'required|exists:briefs,id',
-            'link'     => 'required|url',
-            'notes'    => 'nullable|string|max:2000',
+            'url'     => 'required|url',
+            'content'    => 'nullable|string|max:2000',
         ]);
 
-        // We use create() so every submission is a new record
-        $mergedContent = "PRIMARY LINK: " . $request->link . "\n\nADDITIONAL NOTES:\n" . ($request->notes ?? 'No additional notes provided.');
-
-        \App\Models\Livrable::create([
+        Livrable::create([
             'brief_id'   => $request->brief_id,
             'learner_id' => auth()->id(),
-            'content'    => $mergedContent,
-            // Optional: you might want to add a 'type' column later to distinguish between Design/Code
+            'content'    => $request->content,
+            'url' => $request->url,
         ]);
 
         return redirect()->route('learner.briefs.index')->with('success', 'Deliverable submitted successfully!');

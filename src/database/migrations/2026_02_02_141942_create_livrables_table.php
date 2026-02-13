@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->text('content');
+            $table->text('content')->nullable();
+            $table->text('url');
             $table->foreignId('learner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('brief_id')->constrained('briefs')->onDelete('cascade');
         });

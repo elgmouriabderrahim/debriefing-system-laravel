@@ -53,7 +53,8 @@
                 </div>
                 <div class="border-l border-slate-100 pl-8">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Deliverables</p>
-                    <span class="text-sm font-bold text-slate-700">{{ $brief->livrables_count }} Total</span>
+                    {{-- Fixed: Count unique learner IDs --}}
+                    <span class="text-sm font-bold text-slate-700">{{ $brief->livrables->unique('learner_id')->count() }} Students</span>
                 </div>
             </div>
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\Instructor\InstructorDashboardController;
 use App\Http\Controllers\Instructor\LearnersController;
 use App\Http\Controllers\Instructor\ClassroomsController;
 use App\Http\Controllers\Instructor\BriefsController;
+use App\Http\Controllers\Instructor\InstructorDebriefingsController;
 
 
 use App\Http\Controllers\Learner\LearnerDashboardController;
@@ -65,6 +66,11 @@ Route::middleware(['role:instructor'])->prefix('instructor')->name('instructor.'
     Route::resource('briefs', BriefsController::class);
 
     Route::post('sprints/assign',[InstructorDashboardController::class, 'assignSprints'])->name('sprints.assign');
+
+    Route::get('debriefings', [InstructorDebriefingsController::class, 'index'])->name('debriefings.index');
+    Route::get('debriefings/{brief}', [InstructorDebriefingsController::class, 'show'])->name('debriefings.show');
+    Route::get('debriefings/{brief}/learner/{learner}', [InstructorDebriefingsController::class, 'debrief'])->name('debriefings.debrief');
+    Route::post('debriefings/{brief}/learner/{learner}', [InstructorDebriefingsController::class, 'storeEvaluation'])->name('debriefings.store');
 });
 
 Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(function() {
@@ -74,7 +80,6 @@ Route::middleware(['role:learner'])->prefix('learner')->name('learner.')->group(
     Route::get('briefs/{brief}/submit', [LearnerBriefsController::class, 'submit'])->name('briefs.submit');
 
     Route::post('/livrables/store', [LivrableController::class, 'store'])->name('livrables.store');
-
 
     Route::get('debriefs', [LearnerDebriefingsController::class, 'index'])->name('debriefings.index');
 });

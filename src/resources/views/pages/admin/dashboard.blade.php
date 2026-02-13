@@ -27,7 +27,7 @@
                 </div>
                 <span class="text-indigo-600 text-[10px] font-black bg-indigo-50 px-2 py-1 rounded-lg border border-indigo-100">COMMUNITY</span>
             </div>
-            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em] mb-1">Total Identity</h4>
+            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em] mb-1">Total Users</h4>
             <h2 class="text-4xl font-black text-slate-900 tracking-tight">{{ $userCount }}</h2>
             <div class="mt-4 flex gap-2">
                 <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">{{ $learnerCount }} LRN / {{ $instructorCount }} STF</span>
@@ -38,7 +38,7 @@
             <div class="p-3 bg-violet-50 text-violet-600 rounded-xl w-fit mb-6 group-hover:bg-violet-600 group-hover:text-white transition-all duration-500">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
             </div>
-            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em] mb-1">Active Clusters</h4>
+            <h4 class="text-slate-400 font-bold uppercase text-[10px] tracking-[0.2em] mb-1">Total Classrooms</h4>
             <h2 class="text-4xl font-black text-slate-900 tracking-tight">{{ $classroomCount }}</h2>
             <p class="text-[10px] text-violet-500 mt-2 font-black uppercase tracking-tighter italic">Managed Deployments</p>
         </div>
@@ -103,9 +103,9 @@
                             </td>
                             <td class="px-10 py-6">
                                 <div class="flex justify-end opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
-                                    <button class="p-2 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 rounded-lg shadow-sm">
+                                    <a href="{{ route('admin.users.index') }}" class="p-2 bg-white border border-slate-200 text-slate-400 hover:text-indigo-600 rounded-lg shadow-sm">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -118,7 +118,7 @@
         <div class="space-y-8">
             <div class="bg-white rounded-[2.5rem] border border-slate-100 p-8 shadow-sm relative overflow-hidden">
                 <div class="flex justify-between items-center mb-8 relative z-10">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Latest Briefings</h3>
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Latest Briefs</h3>
                     <span class="flex h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></span>
                 </div>
                 <div class="space-y-6 relative z-10">
@@ -140,11 +140,11 @@
                 <div class="absolute -bottom-12 -right-12 h-40 w-40 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/30 transition-all duration-700"></div>
                 
                 <p class="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-2 italic">Workspace Control</p>
-                <h3 class="text-2xl font-black mb-4 tracking-tighter uppercase italic">Cluster <span class="text-indigo-400">Hub</span></h3>
+                <h3 class="text-2xl font-black mb-4 tracking-tighter uppercase italic">Classromm <span class="text-indigo-400">Hub</span></h3>
                 <p class="text-[11px] text-slate-400 leading-relaxed mb-8 font-bold uppercase tracking-wide">Coordinate progress across all {{ $classroomCount }} active deployments and monitor milestones.</p>
                 
                 <a href="{{ route('admin.classrooms.index') }}" class="flex items-center justify-center gap-3 w-full py-4 bg-indigo-600 text-white text-center rounded-2xl font-black shadow-xl hover:bg-white hover:text-slate-900 transition-all active:scale-95 text-[10px] uppercase tracking-[0.2em]">
-                    Access Clusters
+                    Access Classromms
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                 </a>
             </div>

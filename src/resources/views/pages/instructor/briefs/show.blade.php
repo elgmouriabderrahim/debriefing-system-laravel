@@ -16,14 +16,15 @@
 
             <div class="flex items-center gap-4">
                 <div class="flex -space-x-2">
-                    @foreach($brief->livrables->take(4) as $liv)
+                    {{-- Fixed: Unique avatars --}}
+                    @foreach($brief->livrables->unique('learner_id')->take(4) as $liv)
                         <div class="h-7 w-7 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[8px] font-bold text-slate-500">
                             {{ strtoupper(substr($liv->learner->first_name, 0, 1)) }}
                         </div>
                     @endforeach
-                    @if($submittedCount > 4)
+                    @if($brief->livrables->unique('learner_id')->count() > 4)
                         <div class="h-7 w-7 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-[8px] font-bold text-white">
-                            +{{ $submittedCount - 4 }}
+                            +{{ $brief->livrables->unique('learner_id')->count() - 4 }}
                         </div>
                     @endif
                 </div>
@@ -59,12 +60,12 @@
                     <div class="flex items-center justify-between mb-10">
                         <h3 class="text-sm font-black uppercase tracking-widest text-slate-900">Deliverables</h3>
                         <div class="h-px flex-grow mx-6 bg-slate-100"></div>
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $submittedCount }} / {{ $totalLearners }} Students</span>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $brief->livrables->unique('learner_id')->count() }} / {{ $totalLearners }} Students</span>
                     </div>
 
                     <div class="grid grid-cols-1 gap-2">
-                        @forelse($brief->livrables as $livrable)
-                        <div class="group flex items-center justify-between p-3 rounded-2xl border border-transparent hover:border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all">
+                        @forelse($brief->livrables->unique('learner_id') as $livrable)
+                        <div class="group flex items-center shadow-sm justify-between p-3 rounded-2xl border border-transparent hover:border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-slate-200/40 transition-all">
                             <div class="flex items-center gap-4">
                                 <div class="h-10 w-10 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-indigo-600 transition-colors">
                                     <span class="text-[11px] font-black text-slate-400 group-hover:text-white">
@@ -76,9 +77,6 @@
                                     <p class="text-[10px] text-slate-400 font-medium">{{ $livrable->created_at->diffForHumans() }}</p>
                                 </div>
                             </div>
-                            <a href="{{ $livrable->content }}" target="_blank" class="h-9 w-9 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </a>
                         </div>
                         @empty
                         <div class="py-12 flex flex-col items-center justify-center bg-slate-50/50 rounded-[2.5rem] border border-dashed border-slate-200">
@@ -98,11 +96,11 @@
                         </div>
                         <p class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-500 mb-6">Group Velocity</p>
                         <div class="flex items-baseline gap-2 mb-2">
-                            <span class="text-6xl font-black text-slate-900 tracking-tighter">{{ $totalLearners > 0 ? round(($submittedCount / $totalLearners) * 100) : 0 }}<span class="text-2xl text-slate-300">%</span></span>
+                            <span class="text-6xl font-black text-slate-900 tracking-tighter">{{ $totalLearners > 0 ? round(($brief->livrables->unique('learner_id')->count() / $totalLearners) * 100) : 0 }}<span class="text-2xl text-slate-300">%</span></span>
                         </div>
                         <p class="text-[11px] font-bold text-slate-400 mb-8">Classroom engagement rate</p>
                         <div class="h-1.5 w-full bg-slate-100 rounded-full">
-                            <div class="h-full bg-slate-900 rounded-full transition-all duration-1000" style="width: {{ $totalLearners > 0 ? ($submittedCount / $totalLearners) * 100 : 0 }}%"></div>
+                            <div class="h-full bg-slate-900 rounded-full transition-all duration-1000" style="width: {{ $totalLearners > 0 ? ($brief->livrables->unique('learner_id')->count() / $totalLearners) * 100 : 0 }}%"></div>
                         </div>
                     </div>
 

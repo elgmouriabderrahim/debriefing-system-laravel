@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('debriefings', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
             $table->text('comment')->nullable();
-
             $table->foreignId('instructor_id')->constrained('users')->onDelete('set null');
             $table->foreignId('learner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('brief_id')->constrained('briefs')->onDelete('cascade');
