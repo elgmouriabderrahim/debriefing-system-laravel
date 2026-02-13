@@ -89,14 +89,20 @@
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Competence Label</label>
-                        <input type="text" name="label" id="label" required placeholder="e.g. Frontend Development" 
-                               class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        <input type="text" name="label" id="label" value="{{ old('label') }}" placeholder="e.g. Frontend Development" 
+                               class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('label') ? 'border-rose-500' : 'border-transparent' }} focus:border-emerald-500 rounded-2xl font-bold text-slate-700 outline-none transition-all">
+                        @error('label')
+                            <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1 validation-error">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Reference Code</label>
-                        <input type="text" name="code" id="code" required placeholder="e.g. FE-001" 
-                               class="w-full px-5 py-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-2xl font-bold font-mono text-emerald-700 outline-none transition-all">
+                        <input type="text" name="code" id="code" value="{{ old('code') }}" placeholder="e.g. FE-001" 
+                               class="w-full px-5 py-4 bg-slate-50 border-2 {{ $errors->has('code') ? 'border-rose-500' : 'border-transparent' }} focus:border-emerald-500 rounded-2xl font-bold font-mono text-emerald-700 outline-none transition-all">
+                        @error('code')
+                            <p class="text-[10px] text-rose-500 font-bold mt-1 ml-1 validation-error">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="pt-4">
@@ -128,6 +134,14 @@
     const form = document.getElementById('competenceForm');
     let currentDeleteId = null;
 
+    function clearValidationErrors() {
+        document.querySelectorAll('.validation-error').forEach(el => el.remove());
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('border-rose-500');
+            input.classList.add('border-transparent');
+        });
+    }
+
     function openModal() {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -140,6 +154,7 @@
     }
 
     document.getElementById('AddNewCompetence').addEventListener('click', () => {
+        clearValidationErrors();
         document.getElementById('modalTitle').innerText = 'New Competence';
         form.action = "{{ route('admin.competences.store') }}";
         document.getElementById('methodContainer').innerHTML = '';
@@ -147,6 +162,7 @@
     });
 
     function initEdit(competence) {
+        clearValidationErrors();
         document.getElementById('modalTitle').innerText = 'Edit Competence';
         form.action = `/admin/competences/${competence.id}`;
         document.getElementById('methodContainer').innerHTML = '@method("PUT")';
@@ -175,5 +191,9 @@
     window.onkeydown = (e) => { 
         if(e.key === "Escape") { closeModal(); closeConfirm(); } 
     };
+
+    @if ($errors->any())
+        window.onload = () => openModal();
+    @endif
 </script>
 @endsection
