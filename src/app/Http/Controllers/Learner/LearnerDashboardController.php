@@ -27,7 +27,7 @@ class LearnerDashboardController extends Controller
 
             return [
                 'info' => $comp,
-                'level' => $latestDebrief->level ?? 'Not Evaluated', // IMITER, S_ADAPTER, or TRANSPOSER
+                'level' => $latestDebrief->level ?? 'Not Evaluated',
                 'comment' => $latestDebrief->comment ?? null
             ];
         });

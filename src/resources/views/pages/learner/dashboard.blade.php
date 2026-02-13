@@ -3,6 +3,7 @@
 @section('content')
 <div class="max-w-6xl mx-auto space-y-6 pb-12">
     
+    {{-- Header Section --}}
     <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-4">
             <div class="h-12 w-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-lg shadow-blue-100">
@@ -30,13 +31,14 @@
         </div>
     </div>
 
+    {{-- Legend / Info Cards --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         @foreach([
-            ['L1', 'IMITER', 'blue', 'Reproduce tasks exactly as demonstrated.'],
-            ['L2', 'S_ADAPTER', 'indigo', 'Adjust skills to similar contexts.'],
-            ['L3', 'TRANSPOSER', 'emerald', 'Apply concepts to new situations.']
+            ['L1', 'imiter', 'blue', 'Reproduce tasks exactly as demonstrated.'],
+            ['L2', 's_adapter', 'indigo', 'Adjust skills to similar contexts.'],
+            ['L3', 'transposer', 'emerald', 'Apply concepts to new situations.']
         ] as [$code, $label, $color, $desc])
-        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 transition-all hover:border-{{$color}}-200">
+        <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 transition-all">
             <div class="h-10 w-10 rounded-xl bg-{{$color}}-50 text-{{$color}}-600 flex items-center justify-center font-black text-xs shrink-0">
                 {{ $code }}
             </div>
@@ -48,6 +50,7 @@
         @endforeach
     </div>
 
+    {{-- Main Matrix --}}
     <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
             <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest italic">My Competence Matrix</h3>
@@ -56,6 +59,9 @@
         
         <div class="divide-y divide-slate-50">
             @forelse($competenceProgress as $item)
+            @php 
+                $currentLevel = strtolower($item['level']); // Safety check to ensure it's lowercase
+            @endphp
             <div class="px-6 py-3 group hover:bg-slate-50/50 transition-all">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
                     <div class="lg:col-span-4 flex items-center gap-3">
@@ -67,13 +73,20 @@
 
                     <div class="lg:col-span-5">
                         <div class="flex items-center gap-3">
+                            {{-- PROGRESS BAR LOGIC - ALL LOWERCASE --}}
                             <div class="flex-1 h-2 bg-slate-100 rounded-full flex p-0.5 gap-1">
-                                <div class="h-full rounded-full flex-1 {{ in_array($item['level'], ['IMITER', 'S_ADAPTER', 'TRANSPOSER']) ? 'bg-blue-500' : 'bg-slate-200' }}"></div>
-                                <div class="h-full rounded-full flex-1 {{ in_array($item['level'], ['S_ADAPTER', 'TRANSPOSER']) ? 'bg-indigo-500' : 'bg-slate-200' }}"></div>
-                                <div class="h-full rounded-full flex-1 {{ $item['level'] == 'TRANSPOSER' ? 'bg-emerald-500' : 'bg-slate-200' }}"></div>
+                                {{-- Bar 1: Blue if level is at least imiter --}}
+                                <div class="h-full rounded-full flex-1 {{ in_array($currentLevel, ['imiter', 's_adapter', 'transposer']) ? 'bg-blue-500' : 'bg-slate-200' }}"></div>
+                                
+                                {{-- Bar 2: Indigo if level is at least s_adapter --}}
+                                <div class="h-full rounded-full flex-1 {{ in_array($currentLevel, ['s_adapter', 'transposer']) ? 'bg-indigo-500' : 'bg-slate-200' }}"></div>
+                                
+                                {{-- Bar 3: Emerald if level is exactly transposer --}}
+                                <div class="h-full rounded-full flex-1 {{ $currentLevel == 'transposer' ? 'bg-emerald-500' : 'bg-slate-200' }}"></div>
                             </div>
+
                             <span class="text-[9px] font-black text-slate-400 uppercase w-20 text-right">
-                                {{ str_replace('_', ' ', $item['level'] ?? 'N/A') }}
+                                {{ str_replace('_', ' ', $currentLevel ?? 'N/A') }}
                             </span>
                         </div>
                     </div>
