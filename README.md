@@ -97,7 +97,7 @@ composer install
 ```bash
 cp .env.example .env
 php artisan key:generate
-
+```
 4. Exécuter les migrations :
 ```bash
 php artisan migrate
@@ -109,21 +109,29 @@ http://localhost:8000
 
 
 ## screenshots
+
 ![Debriefing system](screenshots/s1.png)
+
 **admin**
+
 ![Debriefing system](screenshots/admin-dashboard.png)
 ![Debriefing system](screenshots/admin-class-managings.png)
 ![Debriefing system](screenshots/admin-sprints.png)
 ![Debriefing system](screenshots/admin-user-accounts-creation.png)
 ![Debriefing system](screenshots/admin-users-managing.png)
 
+
 **instructor**
+
 ![Debriefing system](screenshots/instructor-dashboard.png)
 ![Debriefing system](screenshots/instructor-briefs-managing.png)
 ![Debriefing system](screenshots/debrief-students.png)
 ![Debriefing system](screenshots/debriefing-student.png)
 ![Debriefing system](screenshots/deletions-confirming.png)
 ![Debriefing system](screenshots/instructor-students-managing.png)
+
+
 **learner**
+
 ![Debriefing system](screenshots/student-briefs.png)
 ![Debriefing system](screenshots/student-dashboard.png)
